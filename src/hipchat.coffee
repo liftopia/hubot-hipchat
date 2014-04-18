@@ -131,13 +131,14 @@ class HipChat extends Adapter
         for user in users
           user.id = @userIdFromJid user.jid
           # userForId will not merge to an existing user
-          if user.id of @robot.brain.data.users
+          if user.id in @robot.brain.data.users
             oldUser = @robot.brain.data.users[user.id]
             for key, value of oldUser
               unless key of user
                 user[key] = value
             delete @robot.brain.data.users[user.id]
           @robot.brain.userForId user.id, user
+          @robot.brain.data.users[user.id]['mention_name'] = user.mention_name
 
       joinRoom = (jid) =>
         if jid and typeof jid is "object"
